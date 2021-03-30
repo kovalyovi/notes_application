@@ -12,12 +12,17 @@ export default class extends AbstractView {
 
   async getHtml() {
     return `
-<h1>Logout</h1>
-<div>
-  <div>
-      <button id="logout">Log out</button>
+
+    <div class="login-container">
+    <div class="login-box">
+  
+  <h1>Logout</h1>
+    <div>
+        <button id="logout">Log out</button>
+    </div>
+    </div>
+    </div>
   </div>
-</div>
         `;
   }
 

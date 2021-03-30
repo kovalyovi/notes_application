@@ -1,0 +1,34 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+
+$background-color: #091231;
+$button-color: #5EDEFA;
+$font-color: #0B194A;
+/**************Jurassic******************/
+$red-color: #ff2200;
+$yellow-color: #FFF300;
+$black-color: #000;
+/************************************/
+$login-color: #20263B;
+
+
+
+.display-container{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: "Roboto Mono", monospace;
+    background-color: $background-color;
+    color: #fff;
+}

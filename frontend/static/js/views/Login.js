@@ -12,19 +12,21 @@ export default class extends AbstractView {
 
   async getHtml() {
     return `
-<h1>Login</h1>
-<div>
-  <div>
-      <input id="email" type="text" placeholder="Email">
+    <div class="login-container">
+    <div class="login-box">
+  <h1>Login</h1>
+    <div>
+        <input id="email" type="text" placeholder="Email">
+    </div>
+    <div>
+        <input id="password" type="password" placeholder="Password">
+    </div>
+    <div>
+        <button id="login">Connect</button>
+        <button>Sign up</button>
+    </div>
+    </div>
   </div>
-  <div>
-      <input id="password" type="password" placeholder="Password">
-  </div>
-  <div>
-      <button id="login">Connect</button>
-      <button>Sign up</button>
-  </div>
-</div>
         `;
   }
 

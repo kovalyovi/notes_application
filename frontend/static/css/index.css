@@ -1,8 +1,22 @@
+
+
+
+
+
+
+
 body {
+
+  background-color: white;
   --nav-width: 200px;
   margin: 0 0 0 var(--nav-width);
   font-family: "Quicksand", sans-serif;
   font-size: 18px;
+}
+
+
+.login-container{
+  background-color: black;
 }
 
 /* Creates a full-height, left-mounted navigation menu */

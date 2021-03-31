@@ -1,5 +1,5 @@
-import Auth from "../services/Auth.js";
-import AbstractView from "./AbstractView.js";
+import Auth from "../../services/Auth.js";
+import AbstractView from "../AbstractView.js";
 
 export default class extends AbstractView {
   constructor(params) {

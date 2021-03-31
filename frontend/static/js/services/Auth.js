@@ -7,7 +7,7 @@ export default class Auth {
     this.token = "";
     this.utils = new Utils();
     this.USER_JWT = "USER_JWT";
-    this.isFake = true;
+    this.isFake = false;
     this.endpoint = "https://whatever-notes.herokuapp.com/auth";
   }
 
@@ -33,7 +33,14 @@ export default class Auth {
   async signup(obj) {
     const model = new LoginModel(obj);
 
-    console.log(model);
+    const response = await fetch(`${this.endpoint}/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //   "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(model),
+    });
   }
 
   async login(email, password) {
@@ -53,13 +60,15 @@ export default class Auth {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        //   "Access-Control-Allow-Origin": "*",
       },
-      body: {
+      body: JSON.stringify({
         email: email,
         password: password,
-      },
+      }),
     });
+
+    console.log(response);
 
     if (response.ok && response.status == 200) {
       const data = await response.json();

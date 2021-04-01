@@ -1,4 +1,4 @@
-export default class Utils {
+export default class Contacts {
     constructor() {
       this.firstName = "";
       this.lastName = "";

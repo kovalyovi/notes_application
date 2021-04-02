@@ -66,8 +66,7 @@ const router = async () => {
     .filter((x) => x.shouldDisplay)
     .map(
       (x) =>
-        `<a href="${x.path}" class="nav__link ${
-          doesPathMatch(x.path) ? "active" : ""
+        `<a href="${x.path}" class="nav__link ${doesPathMatch(x.path) ? "active" : ""
         }" data-link>${x.text}</a>`
     )
     .join("");
@@ -111,6 +110,10 @@ document.addEventListener("DOMContentLoaded", () => {
       navigateTo(e.target.href);
     }
   });
+
+  document.querySelector('#pending-screen').addEventListener('click', () => {
+    document.querySelector('#pending-screen').classList.remove('hidden');
+  })
 
   /* Document has loaded -  run the router! */
   router();

@@ -41,6 +41,8 @@ export default class Auth {
       },
       body: JSON.stringify(model),
     });
+
+    return response;
   }
 
   async login(email, password) {

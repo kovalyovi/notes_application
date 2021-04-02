@@ -15,7 +15,7 @@ export default class extends AbstractView {
 
     <div class="login-container">
     <div class="login-box">
-  
+
   <h1>Logout</h1>
     <div>
         <button id="logout">Log out</button>

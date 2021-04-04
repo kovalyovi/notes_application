@@ -8,15 +8,39 @@ export default class extends AbstractView {
 
   async getHtml() {
     return `
+
+
+        
+    <div class="browswer-container">
+    
+    <div class="show-box">
+      
+  
+
+      <div class="nav-header">
+        <div class="circle-container">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+    <label for="noteTitle"></label>
+    <input style="color: #fff;" type="text" id="noteTitle" name="noteTitle">
+        <div id="save"></div>
+      </div>
+
 <div id="noteInfo">
     <!-- Title of note. Maybe place in header? -->
-    <label for="noteTitle">Title:</label>
-    <input type="text" id="noteTitle" name="noteTitle"><br><br>
-    <textarea id="noteText" rows="10" cols="50"></textarea>
+
+    <textarea id="noteText" ></textarea>
  </div>
  <div id="controls">
     <button class="saveButton" onclick="save()">Save</button>
  </div>
+      
+        </div>
+      </div>
+
+
         `;
   }
 

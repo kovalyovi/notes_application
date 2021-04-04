@@ -10,8 +10,8 @@ export default class extends AbstractView {
     return `
 <div class="main-container">
     <div class="container">
-       <div class="item">
-          <div class="icon-container">
+       <div onclick="location.href='/notes'" class="item">
+          <div   class="icon-container">
              <i class="fas fa-envelope"></i>
              <h3>Personal Note</h3>
           </div>
@@ -29,7 +29,7 @@ export default class extends AbstractView {
              <h3>Teams</h3>
           </div>
        </div>
-       <div class="item">
+       <div onclick="location.href='/settings'" class="item">
           <div class="icon-container">
              <i class="fas fa-cog"></i>
              <h3>Settings</h3>

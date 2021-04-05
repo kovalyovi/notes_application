@@ -10,6 +10,16 @@ $black-color: #000;
 /************************************/
 $login-color: #20263B;
 
+
+
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .nav{
     position:absolute;
     left: 0;
@@ -40,5 +50,6 @@ body{
     font-family: "Roboto Mono", monospace;
     background-color: $background-color;
     color: #fff;
+    
 
 }

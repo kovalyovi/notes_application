@@ -1,6 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
 /**************Jurassic******************/
 /************************************/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .nav {
   position: absolute;
   left: 0;
@@ -38,8 +44,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px;
   height: 100vh;
+  overflow: hidden;
 }
 
 .login-box {

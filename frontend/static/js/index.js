@@ -8,6 +8,7 @@ import Auth from "./services/Auth.js";
 import Login from "./views/auth/Login.js";
 import Logout from "./views/auth/Logout.js";
 import Signup from "./views/auth/Signup.js";
+import Note from "./views/Note.js";
 
 const pathToRegex = (path) =>
   new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
@@ -50,7 +51,7 @@ const router = async () => {
     routes = [
       { path: "/", view: Dashboard, text: "Home", shouldDisplay: true },
       { path: "/notes", view: Notes, text: "Notes", shouldDisplay: true },
-      { path: "/posts/:id", view: PostView, shouldDisplay: false },
+      { path: "/notes/:id", view: Note, shouldDisplay: false },
       {
         path: "/settings",
         view: Settings,

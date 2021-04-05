@@ -1,56 +1,95 @@
-import AbstractView from "./AbstractView.js";
+import NoteModel from "../models/NoteModel.js";
+import AbstractView, { $ } from "./AbstractView.js";
 
 export default class extends AbstractView {
   constructor(params) {
     super(params);
     this.setTitle("Notes");
+
+    this.notes = [];
+
+    this.getNotes();
   }
 
   async getHtml() {
     return `
-
-
-        
-    <div class="browswer-container">
-    
-    <div class="show-box">
-      
-  
-
-      <div class="nav-header">
-        <div class="circle-container">
-          <div></div>
-          <div></div>
-          <div></div>
+      <div class="notes-container" style="padding-top: 80px; text-align:center;">
+        <div class="notes-controls">
+          <button id="add-notes">Add Notes</button>
         </div>
-    <label for="noteTitle"></label>
-    <input style="color: #fff;" type="text" id="noteTitle" name="noteTitle">
-        <div id="save"></div>
+        <ul id="notes-list">
+          <li>No notes found</li>
+        </ul>
       </div>
-
-<div id="noteInfo">
-    <!-- Title of note. Maybe place in header? -->
-
-    <textarea id="noteText" ></textarea>
- </div>
- <div id="controls">
-    <button class="saveButton" onclick="save()">Save</button>
- </div>
-      
-        </div>
-      </div>
-
-
         `;
   }
 
   async getListeners() {
-    document.querySelector("#logout").addEventListener("click", async (e) => {
-      const auth = new Auth();
+    document.querySelectorAll(".note-card").forEach((oldElement) => {
+      const newElement = this.removeListeners(oldElement);
 
-      await auth.logout();
-
-      this.params.onNavigate("/");
+      newElement.addEventListener("click", (el) => {
+        this.params.onNavigate(`/notes/${el.currentTarget.dataset.note_id}`);
+      });
     });
+
+    this.removeListeners($("#add-notes"));
+    $("#add-notes").addEventListener("click", async (_) => {
+      console.log("lol");
+      const newId = Math.floor(Math.random() * -100);
+
+      this.notes.unshift(
+        new NoteModel({
+          noteId: `id_${newId}`,
+          subject: `Subject ${newId}`,
+          content: `Content ${newId}`,
+        })
+      );
+
+      await this.updateView();
+    });
+  }
+
+  removeListeners(el) {
+    let elClone = el.cloneNode(true);
+    el.parentNode.replaceChild(elClone, el);
+
+    return elClone;
+  }
+
+  async updateView() {
+    $("#notes-list").innerHTML = this.notes
+      .map(
+        (note) => `
+      <li>
+        <div class="note-card" data-note_id=${note.id}>
+          <span class="note-id">id: ${note.id}</span>
+          <span class="note-id">subject: ${note.subject}</span>
+          <span class="note-id">content: ${note.content}</span>    
+        </div>
+      </li>
+    `
+      )
+      .join("");
+
+    await this.getListeners();
+  }
+
+  async getNotes() {
+    this.setPending(true);
+
+    setTimeout(async () => {
+      for (let i = 0; i < 60; i++) {
+        this.notes.push(
+          new NoteModel({
+            noteId: `id_${i}`,
+            subject: `Subject ${i}`,
+            content: `Content ${i}`,
+          })
+        );
+      }
+      await this.updateView();
+      this.setPending(false);
+    }, 1000);
   }
 }

@@ -46,6 +46,7 @@ export default class Auth {
   }
 
   async login(email, password) {
+    email = email.toLowerCase();
     if (this.isFake && email == "test@test.ff" && password == "123123") {
       const jwtToken =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwicm9sZXMiOlsidXNlciIsImFkbWluIl0sImlhdCI6MTUxNjIzOTAyMn0.btMKuEaxUhfz5DrCxQFnJ5frBq0xjL3ma5szXPLtNng";

@@ -35,7 +35,6 @@ export default class extends AbstractView {
 
     this.removeListeners($("#add-notes"));
     $("#add-notes").addEventListener("click", async (_) => {
-      console.log("lol");
       const newId = Math.floor(Math.random() * -100);
 
       this.notes.unshift(

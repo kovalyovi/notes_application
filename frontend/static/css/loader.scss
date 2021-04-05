@@ -56,10 +56,12 @@
   
   .login-box.unsuccess {
     box-shadow: 0px 0px 25px #a57834;
+    transition: 0.4s ease-in-out;
   }
   
   .login-box.success {
     box-shadow: 0px 0px 25px #8cfa5e;
+    transition: 0.4s ease-in-out;
   }
 
   .display {

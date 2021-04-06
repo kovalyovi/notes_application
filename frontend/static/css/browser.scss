@@ -60,4 +60,35 @@
     height: 500px;
     resize: none;
   }
+
+  .controls{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
   
+  .browswer-container button{
+    font-size: 18px;
+    font-weight: 400;
+    padding:20px 40px;
+    background: transparent;
+    color: #04c9ed;
+    outline: none;
+    border: 2px solid #04c9ed;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 100px;
+    transition: 0.4s ease;
+}
+
+.browswer-container  button:nth-child(1):hover{
+ border: 2px solid green;
+ box-shadow: 0 5px 50px 0 green inset, 0 5px 50px 0 green ;
+ color:green;
+}
+
+.browswer-container  button:nth-child(2):hover{
+  border: 2px solid red;
+  box-shadow: 0 5px 50px 0 red inset, 0 5px 50px 0 red ;
+  color:red;
+ }

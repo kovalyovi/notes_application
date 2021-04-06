@@ -31,7 +31,7 @@ export default class extends AbstractView {
         <!-- Title of note. Maybe place in header? -->
         <textarea id="noteText" ></textarea>
       </div>
-      <div id="controls">
+      <div class="controls" id="controls">
         <button id="save-note">Save</button>
         <button id="delete-note">Delete</button>
       </div>

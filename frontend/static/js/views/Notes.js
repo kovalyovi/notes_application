@@ -8,6 +8,7 @@ export default class extends AbstractView {
     this.setTitle("Notes");
 
     this.notes = [];
+    this.endpoint = "https://whatever-notes.herokuapp.com";
 
     this.getNotes();
   }
@@ -37,14 +38,28 @@ export default class extends AbstractView {
     this.removeListeners($("#add-notes"));
     $("#add-notes").addEventListener("click", async (_) => {
       const newId = Math.floor(Math.random() * -100);
+      const newNote = new NoteModel({
+        noteId: `id_${newId}`,
+        subject: `Subject ${newId}`,
+        content: `Content ${newId}`,
+      });
 
-      this.notes.unshift(
-        new NoteModel({
-          noteId: `id_${newId}`,
-          subject: `Subject ${newId}`,
-          content: `Content ${newId}`,
-        })
-      );
+      const auth = new Auth();
+      const token = await auth.getToken();
+
+      const response = await fetch(`${this.endpoint}/note/create-note`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          //   "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(newNote),
+      });
+
+      const noteJson = (await response.json()).data;
+
+      this.notes.unshift(new NoteModel(noteJson));
 
       await this.updateView();
     });
@@ -63,7 +78,7 @@ export default class extends AbstractView {
         (note) => `
       <li>
         <div class="note-card" data-note_id=${note.id}>
-          <span class="note-id">id: ${note.id}</span>
+          <span class="note-id">id: ${note.id.substring(0, 8)}...</span>
           <span class="note-id">subject: ${note.subject}</span>
           <span class="note-id">content: ${note.content}</span>    
         </div>
@@ -78,24 +93,29 @@ export default class extends AbstractView {
   async getNotes() {
     this.setPending(true);
 
-    // const auth = new Auth();
-    // const token = await auth.getToken();
+    const auth = new Auth();
+    const token = await auth.getToken();
 
-    // const response = await fetch(
-    //   `https://whatever-notes.herokuapp.com/note/notes`,
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
-    //       //   "Access-Control-Allow-Origin": "*",
-    //     },
-    //   }
-    // );
+    const response = await fetch(`${this.endpoint}/note/notes`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        //   "Access-Control-Allow-Origin": "*",
+      },
+    });
 
-    // this.setPending(false);
+    this.setPending(false);
 
-    // console.log(response);
+    const data = (await response.json()).data;
+
+    for (let item of data) {
+      this.notes.push(new NoteModel(item));
+    }
+
+    await this.updateView();
+
+    return;
 
     setTimeout(async () => {
       for (let i = 0; i < 60; i++) {

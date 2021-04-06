@@ -76,12 +76,12 @@ export default class Auth {
     if (response.ok && response.status == 200) {
       const data = await response.json();
       console.log(`data:`);
-      console.log(data);
+      console.log(data.token);
 
       try {
-        const jwtToken = "stuff" ?? this.utils.parseJwt(response);
+        const jwtToken = this.utils.parseJwt(data.token);
 
-        await this.updateToken(jwtToken);
+        await this.updateToken(data.token);
         this.isAuthenticated = true;
 
         return true;

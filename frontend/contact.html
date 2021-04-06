@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us</title>
+    <script type="module" src="/static/js/services/Contact.js"></script>
+  </head>
+
+  <body>
+    <form id="feedback">
+        <h1 id="formTitle">Contact Us</h1>
+        <p id="formSubtitle">Have any questions or feedback? We'd love to hear from you!</p>
+
+        <label for="firstName">First Name: </label>
+        <input type="text" id="firstName" name="firstName">
+        <div id="firstNameError"></div><br>
+
+        <label for="lastName">Last Name: </label>
+        <input type="text" id="lastName" name="lastName">
+        <div id="lastNameError"></div><br>
+        
+        <label for="date">Date (dd/mm/yy): </label>
+        <input type="date" id="date" name="date">
+        <div id="dateError"></div><br>
+
+        <label for="subject">Subject: </label>
+        <input type="text" id="subject" name="subject">
+        <div id="subjectError"></div><br>
+
+        <label for="message">Message: </label>
+        <div id="messageError"></div>
+        <textarea id="message" name="message"></textarea><br><br>
+
+        <button id="feedbackSubmit">Submit</button>
+    </form>
+  </body>
+</html>

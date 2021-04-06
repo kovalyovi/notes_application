@@ -1,5 +1,6 @@
 import NoteModel from "../models/NoteModel.js";
 import Auth from "../services/Auth.js";
+import NoteService from "../services/NoteService.js";
 import AbstractView, { $ } from "./AbstractView.js";
 
 export default class extends AbstractView {
@@ -8,9 +9,13 @@ export default class extends AbstractView {
     this.setTitle("Notes");
 
     this.notes = [];
-    this.endpoint = "https://whatever-notes.herokuapp.com";
 
-    this.getNotes();
+    this.noteService = new NoteService();
+
+    this.withPending(async () => {
+      this.notes = await this.noteService.getNotes();
+      await this.updateView();
+    });
   }
 
   async getHtml() {
@@ -37,31 +42,12 @@ export default class extends AbstractView {
 
     this.removeListeners($("#add-notes"));
     $("#add-notes").addEventListener("click", async (_) => {
-      const newId = Math.floor(Math.random() * -100);
-      const newNote = new NoteModel({
-        noteId: `id_${newId}`,
-        subject: `Subject ${newId}`,
-        content: `Content ${newId}`,
+      this.withPending(async () => {
+        const note = await this.noteService.createNote();
+
+        this.notes.unshift(note);
+        await this.updateView();
       });
-
-      const auth = new Auth();
-      const token = await auth.getToken();
-
-      const response = await fetch(`${this.endpoint}/note/create-note`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          //   "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify(newNote),
-      });
-
-      const noteJson = (await response.json()).data;
-
-      this.notes.unshift(new NoteModel(noteJson));
-
-      await this.updateView();
     });
   }
 
@@ -88,47 +74,5 @@ export default class extends AbstractView {
       .join("");
 
     await this.getListeners();
-  }
-
-  async getNotes() {
-    this.setPending(true);
-
-    const auth = new Auth();
-    const token = await auth.getToken();
-
-    const response = await fetch(`${this.endpoint}/note/notes`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-        //   "Access-Control-Allow-Origin": "*",
-      },
-    });
-
-    this.setPending(false);
-
-    const data = (await response.json()).data;
-
-    for (let item of data) {
-      this.notes.push(new NoteModel(item));
-    }
-
-    await this.updateView();
-
-    return;
-
-    setTimeout(async () => {
-      for (let i = 0; i < 60; i++) {
-        this.notes.push(
-          new NoteModel({
-            noteId: `id_${i}`,
-            subject: `Subject ${i}`,
-            content: `Content ${i}`,
-          })
-        );
-      }
-      await this.updateView();
-      this.setPending(false);
-    }, 1000);
   }
 }

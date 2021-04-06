@@ -17,8 +17,17 @@ export default class Auth {
     this.token = "";
   }
 
-  async isAuthenticated() {
-    return (await this.utils.getStorageItem(this.USER_JWT)) !== null;
+  async checkIsAuthenticated() {
+    this.token = await this.utils.getStorageItem(this.USER_JWT);
+    if (!this.token) return false;
+
+    const jwtData = this.utils.parseJwt(this.token);
+
+    if (jwtData.exp * 1000 < Date.now()) {
+      return false;
+    }
+
+    return true;
   }
 
   async getToken() {

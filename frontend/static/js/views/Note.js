@@ -1,4 +1,6 @@
+import NoteModel from "../models/NoteModel.js";
 import Auth from "../services/Auth.js";
+import NoteService from "../services/NoteService.js";
 import AbstractView, { $ } from "./AbstractView.js";
 
 export default class extends AbstractView {
@@ -6,13 +8,13 @@ export default class extends AbstractView {
     super(params);
     this.setTitle("Note");
 
-    this.title = "";
-    this.text = "";
+    this.note = new NoteModel();
 
-    this.id = params.id;
+    this.note.id = params.id;
 
-    this.getNotesData();
-    this.endpoint = "https://whatever-notes.herokuapp.com";
+    this.noteService = new NoteService();
+
+    this.getNote();
   }
 
   async getHtml() {
@@ -43,23 +45,10 @@ export default class extends AbstractView {
   }
 
   async getListeners() {
-    $("#save-note").addEventListener("click", (_) => this.save());
+    $("#save-note").addEventListener("click", (_) => this.saveNote());
     $("#delete-note").addEventListener("click", async (_) => {
       if (confirm("Are you sure want to delete this note?")) {
-        const auth = new Auth();
-        const token = await auth.getToken();
-
-        await fetch(`${this.endpoint}/note/delete-note`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            //   "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({
-            noteId: this.id,
-          }),
-        });
+        await this.noteService.deleteNote(this.note.id);
 
         this.params.onNavigate("/notes");
       }
@@ -67,88 +56,53 @@ export default class extends AbstractView {
 
     $("#noteTitle").addEventListener(
       "input",
-      (e) => (this.title = e.target.value)
+      (e) => (this.note.subject = e.target.value)
     );
 
     $("#noteText").addEventListener(
       "input",
-      (e) => (this.text = e.target.value)
+      (e) => (this.note.content = e.target.value)
     );
   }
 
-  async save() {
-    let title = document.getElementById("noteTitle");
-    let text = document.getElementById("noteText");
-    if (title.value != "" && text.value != "") {
-      this.setPending(true);
-
-      const auth = new Auth();
-      const token = await auth.getToken();
-
-      await fetch(`${this.endpoint}/note/update-note`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          //   "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({
-          noteId: this.id,
-          subject: this.title,
-          content: this.text,
-        }),
+  async saveNote() {
+    if (this.note.subject != "" && this.note.content != "") {
+      await this.withPending(async () => {
+        this.noteService.updateNote(this.note);
       });
 
-      alert(`Saved note ${this.id}`);
-      this.setPending(false);
+      alert(`Updated note ${this.note.id}`);
     }
     //If nothing is put in the note, don't submit
-    else if (text.value === "") {
-      alert("Nothing to save");
+    else if (!this.note.subject) {
+      alert("There is nothing in the note");
     }
     //If nothing is put in the note title, don't submit
-    else if (title.value === "") {
-      alert("No title set");
+    else if (!this.note.subject) {
+      alert("No subject set");
     }
   }
 
-  updateTitle(text) {
-    this.title = text;
+  updateSubject(text) {
+    this.note.subject = text;
     document.querySelector("#noteTitle").value = text;
   }
 
-  updateText(text) {
-    this.text = text;
+  updateContent(text) {
+    this.note.content = text;
     document.querySelector("#noteText").value = text;
   }
 
-  async getNotesData() {
-    this.setPending(true);
+  updateNote(note) {
+    this.updateSubject(note.subject);
+    this.updateContent(note.content);
+  }
 
-    const auth = new Auth();
-    const token = await auth.getToken();
+  async getNote() {
+    this.withPending(async () => {
+      const note = await this.noteService.getNote(this.note.id);
 
-    const response = await fetch(`${this.endpoint}/note/${this.id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-        //   "Access-Control-Allow-Origin": "*",
-      },
+      this.updateNote(note);
     });
-
-    const data = (await response.json()).response;
-
-    this.updateTitle(data.subject);
-    this.updateText(data.content);
-
-    this.setPending(false);
-
-    // this.setPending(true);
-    // setTimeout(() => {
-    //   this.updateTitle(`random title for ${this.id}`);
-    //   this.updateText(`random text for ${this.id}`);
-    //   this.setPending(false);
-    // }, 500);
   }
 }

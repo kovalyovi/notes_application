@@ -13,7 +13,7 @@ export default class extends AbstractView {
        <div onclick="location.href='/notes'" class="item">
           <div   class="icon-container">
              <i class="fas fa-envelope"></i>
-             <h3>Personal Note</h3>
+             <h3>Personal Notes</h3>
           </div>
        </div>
        <div class="item">

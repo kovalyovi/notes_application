@@ -9,6 +9,7 @@ import Login from "./views/auth/Login.js";
 import Logout from "./views/auth/Logout.js";
 import Signup from "./views/auth/Signup.js";
 import Note from "./views/Note.js";
+import Contact from "./views/Contact.js";
 
 const pathToRegex = (path) =>
   new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
@@ -45,6 +46,7 @@ const router = async () => {
     { path: "/", view: Landing, text: "Home", shouldDisplay: true },
     { path: "/login", view: Login, text: "Login", shouldDisplay: true },
     { path: "/signup", view: Signup, text: "Signup", shouldDisplay: true },
+    { path: "/contact", view: Contact, text: "Contact", shouldDisplay: true },
   ];
 
   if (isAuthorized) {
@@ -58,6 +60,7 @@ const router = async () => {
         text: "Settings",
         shouldDisplay: true,
       },
+      { path: "/contact", view: Contact, text: "Contact", shouldDisplay: true },
       { path: "/logout", view: Logout, text: "Logout", shouldDisplay: true },
     ];
   }
@@ -67,7 +70,8 @@ const router = async () => {
     .filter((x) => x.shouldDisplay)
     .map(
       (x) =>
-        `<a href="${x.path}" class="nav__link ${doesPathMatch(x.path) ? "active" : ""
+        `<a href="${x.path}" class="nav__link ${
+          doesPathMatch(x.path) ? "active" : ""
         }" data-link>${x.text}</a>`
     )
     .join("");
@@ -112,9 +116,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  document.querySelector('#pending-screen').addEventListener('click', () => {
-    document.querySelector('#pending-screen').classList.remove('hidden');
-  })
+  document.querySelector("#pending-screen").addEventListener("click", () => {
+    document.querySelector("#pending-screen").classList.remove("hidden");
+  });
 
   /* Document has loaded -  run the router! */
   router();

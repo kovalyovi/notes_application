@@ -1,4 +1,5 @@
 import NoteModel from "../models/NoteModel.js";
+import Auth from "../services/Auth.js";
 import AbstractView, { $ } from "./AbstractView.js";
 
 export default class extends AbstractView {
@@ -76,6 +77,25 @@ export default class extends AbstractView {
 
   async getNotes() {
     this.setPending(true);
+
+    // const auth = new Auth();
+    // const token = await auth.getToken();
+
+    // const response = await fetch(
+    //   `https://whatever-notes.herokuapp.com/note/notes`,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+    //       //   "Access-Control-Allow-Origin": "*",
+    //     },
+    //   }
+    // );
+
+    // this.setPending(false);
+
+    // console.log(response);
 
     setTimeout(async () => {
       for (let i = 0; i < 60; i++) {
